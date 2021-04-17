@@ -27,15 +27,27 @@ class BlockList:
             time.sleep(.3)
             self.load_button = self.chrome.find_element_by_id("loadMoreBlocks")
             self.load_button.click()
-            if i == 1000:
+            if i == 600:
                 scroll = False
             i += 1
             print(i)
 
 class Block:
     def __init__(self, soup: BeautifulSoup) -> None:
-        pass
+        self.soup = soup
+        self._parse_data()
 
-if __name__ == "__main__":
-    blocklist = BlockList("https://web.xmrpool.eu/xmr-pool-blocks.html")
+    def _parse_data(self):
+        """Parse the data from the row"""
+        row_items = self.soup.findAll("td")
+        self.height = int(row_items[0].text)
+        self.maturity = row_items[1].text
+        self.difficulty = row_items[2].text
+        self.block_hash = row_items[3].text
+        self.time_found = row_items[4].text
+        self.luck = row_items[5].text
+        self.reward = row_items[6].text
+
+# if __name__ == "__main__":
+#     blocklist = BlockList("https://web.xmrpool.eu/xmr-pool-blocks.html")
 
